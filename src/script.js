@@ -37,6 +37,8 @@ scene.add(camera);
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.target.y = 2;
+//controls.minDistance = ;
+//controls.maxDistance = ;
 controls.update();
 
 const renderer = new THREE.WebGLRenderer({
@@ -57,6 +59,23 @@ pointLight.position.y = 3;
 pointLight.position.z = 4;
 
 scene.add(pointLight, ambientLight);
+
+// EVENTS
+
+let loadedMesh_ROTATION_Y = 0.005;
+let ground_ROTATION_Z = 0.005;
+
+const canvas_html = document.querySelector('.webgl');
+
+canvas.addEventListener('pointerdown', e => {
+    console.log('ok');
+    loadedMesh_ROTATION_Y = 0;
+});
+
+canvas.addEventListener('pointerup', e => {
+    console.log('ok');
+    loadedMesh_ROTATION_Y = 0;
+});
 
 // OVERLAY
 
@@ -496,8 +515,8 @@ scene.add(ground);
 const animate = function () {
     requestAnimationFrame( animate );
 
-    loadedMesh.rotation.y += 0.005;
-    ground.rotation.z += 0.005;
+    loadedMesh.rotation.y += loadedMesh_ROTATION_Y;
+    ground.rotation.z += ground_ROTATION_Z;
 
     renderer.render(scene, camera);
     renderer.setClearColor(0xD2D2D2, 1);
@@ -517,3 +536,4 @@ window.addEventListener('resize', () => {
     renderer.setSize(sizes.width, sizes.height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
+  
