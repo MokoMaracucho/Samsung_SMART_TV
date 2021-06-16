@@ -64,7 +64,7 @@ const overlayMaterial = new THREE.ShaderMaterial({
     transparent: true,
     uniforms:
     {
-        uAlpha: {value: 1}
+        uAlpha: {value: 0.5}
     },
     vertexShader: `
         void main()
@@ -83,9 +83,20 @@ const overlayMaterial = new THREE.ShaderMaterial({
 const overlay = new THREE.Mesh(overlayGeometry, overlayMaterial);
 scene.add(overlay);
 
+// LOADING MANAGER
+
+const loadingManager = new THREE.LoadingManager(
+    () => {
+        console.log('loaded');
+    },
+    () => {
+        console.log('progress');
+    }
+);
+
 // ENV
 
-const cubeTextureLoader = new THREE.CubeTextureLoader();
+const cubeTextureLoader = new THREE.CubeTextureLoader(loadingManager);
 
 const environnementMapTexture = cubeTextureLoader.load([
     '/img/textures/cubeMaps/px.png',
@@ -98,7 +109,7 @@ const environnementMapTexture = cubeTextureLoader.load([
 
 // TEXTURES
 
-const textureLoader = new THREE.TextureLoader();
+const textureLoader = new THREE.TextureLoader(loadingManager);
 
 const Remote_Steel_ward_AO_TEXTURE = textureLoader.load('/img/textures/Remote_Steel_ward_AO_TEXTURE.png');
 const Remote_Steel_ward_NORMAL_TEXTURE = textureLoader.load('/img/textures/Remote_Steel_ward_NORMAL_TEXTURE.png');
