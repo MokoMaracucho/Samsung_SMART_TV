@@ -155,9 +155,19 @@ canvas {
   margin-right: 30px;
 }
 
+.loading-bar {
+  z-index: 8;
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  height: 10px;
+  background: #000;
+  transform: scaleX(0);
+  transform-origin: top left;
+}
+
 .webgl {
   z-index: 1;
   position: absolute;
   left: 30%;
 }
-  
