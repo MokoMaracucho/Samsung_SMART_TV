@@ -1,0 +1,161 @@
+/* @font-face {
+  font-family: InterRegular;
+  src: url(./fonts/Inter/Inter-Regular.ttf);
+} */
+
+html, body {
+    font-family: Roboto-Regular;
+    touch-action: none;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+    padding: env(safe-area-inset);
+    background-color: #D2D2D2;
+}
+
+#menu {
+  z-index: 2;
+  position: absolute;
+  width: 600px;
+  height: 96%;
+  top: 2%;
+  left: 20px;
+}
+
+#div_selection_category {
+  position: relative;
+  top: 10px;
+  left: 10px;
+}
+
+#div_selection {
+  z-index: 3;
+  position: absolute;
+}
+
+#div_categories {
+  z-index: 4;
+  position: absolute;
+  top: 14px;
+  left: 13px;
+}
+
+#div_category_televisions {
+  position: relative;
+}
+
+#div_category_phones {
+  position: relative;
+  left: 35px;
+}
+
+#div_category_cameras {
+  position: relative;
+  left: 75px;
+}
+
+#div_category_headphones {
+  position: relative;
+  left: 115px;
+}
+
+#go_backward {
+  position: relative;
+  top: 120px;
+  left: 15px;
+}
+
+#path {
+  position: relative;
+  top: 140px;
+  left: 15px;
+}
+
+/* .text_inter {
+  font-family: InterRegular;
+  color: #FFFFFF88;
+} */
+
+#text_arrow {
+  margin-left: 20px;
+}
+
+#text_flat_screen_television {
+  margin-left: 20px;
+}
+
+#title {
+  position: relative;
+  top: 180px;
+  left: 15px;
+}
+
+#price {
+  position: relative;
+  top: 220px;
+  left: 15px;
+}
+
+#description {
+  position: relative;
+  top: 250px;
+  left: 15px;
+}
+
+#buy {
+  position: relative;
+  top: 270px;
+  left: 20px;
+}
+
+#add_like {
+  margin-left: 20px;
+}
+
+#div_preview {
+  z-index: 3;
+  position: absolute;
+  left: 57%;
+  bottom: 15%;
+}
+
+#div_img_001 {
+  display: inline-block;
+}
+
+#img_002 {
+  margin-left: 30px;
+  opacity: 0.2;
+}
+
+#img_003 {
+  margin-left: 30px;
+  opacity: 0.2;
+}
+
+#div_img_003 {
+  display: inline-block;
+}
+
+#menu_right {
+  z-index: 10;
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu_left {
+  margin-right: 30px;
+}
+
+.webgl {
+  z-index: 1;
+  position: absolute;
+  left: 30%;
+}
+  
+
+/*# sourceMappingURL=main.css.map*/
