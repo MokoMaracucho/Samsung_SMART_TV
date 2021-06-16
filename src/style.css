@@ -164,6 +164,14 @@ canvas {
   background: #000;
   transform: scaleX(0);
   transform-origin: top left;
+  transition: transform 0.5s;
+  will-change: transform;
+}
+
+.loading-bar.ended {
+  transform: scaleX(0);
+  transform-origin: top right;
+  transition: transform 1.5s ease-in-out;
 }
 
 .webgl {
