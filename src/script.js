@@ -4,6 +4,7 @@ import  * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import * as dat from 'dat.gui';
+import { gsap } from 'gsap';
 
 // GUI
 
