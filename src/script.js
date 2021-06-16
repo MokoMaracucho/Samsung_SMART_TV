@@ -57,6 +57,32 @@ pointLight.position.z = 4;
 
 scene.add(pointLight, ambientLight);
 
+// OVERLAY
+
+const overlayGeometry = new THREE.PlaneGeometry(2, 2, 1, 1);
+const overlayMaterial = new THREE.ShaderMaterial({
+    transparent: true,
+    uniforms:
+    {
+        uAlpha: {value: 1}
+    },
+    vertexShader: `
+        void main()
+        {
+            gl_Position = vec4(position, 1.0);
+        }
+    `,
+    fragmentShader: `
+        uniform float uAlpha;
+        void main()
+        {
+            gl_FragColor = vec4(0.82, 0.82, 0.82, uAlpha);
+        }
+    `
+});
+const overlay = new THREE.Mesh(overlayGeometry, overlayMaterial);
+scene.add(overlay);
+
 // ENV
 
 const cubeTextureLoader = new THREE.CubeTextureLoader();
@@ -126,7 +152,7 @@ const ground_ALPHA_TEXTURE = textureLoader.load('/img/textures/Shadow_ALPHA_MAP.
 // LOADER
 
 const loader = new GLTFLoader();
-let loadedMesh;
+let loadedMesh = new THREE.Object3D;
 
 loader.load(
 	'gltf/Samsung_SMART_TV.gltf',
