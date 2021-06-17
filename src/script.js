@@ -68,6 +68,7 @@ scene.add(ambientLight);
 
 // EVENTS
 
+
 let loadedMesh_ROTATION_Y = 0.005;
 let ground_ROTATION_Z = 0.005;
 
@@ -203,6 +204,7 @@ const loader = new GLTFLoader();
 
 let loadedMesh = new THREE.Object3D;
 let loadedSecondMesh = new THREE.Object3D;
+let loadedThirdMesh = new THREE.Object3D;
 
 loader.load(
 	'gltf/Samsung_SMART_TV.gltf',
@@ -584,6 +586,7 @@ const loadSecondMesh = function () {
             scene.add(gltf.scene);
             loadedSecondMesh = gltf.scene;
             loadedSecondMesh.position.z = -10;
+            loadedSecondMesh.visible = false;
             gltf.asset;
             gltf.scene.traverse(function(child) {
                 console.log(child);
@@ -609,8 +612,9 @@ const loadThirdMesh = function () {
         'gltf/Beats_Studio_3.gltf',
         function (gltf) {
             scene.add(gltf.scene);
-            loadedSecondMesh = gltf.scene;
-            loadedSecondMesh.position.z = -20;
+            loadedThirdMesh = gltf.scene;
+            loadedThirdMesh.position.z = -20;
+            loadedThirdMesh.visible = false;
             gltf.asset;
             gltf.scene.traverse(function(child) {
                 console.log(child);
@@ -626,4 +630,12 @@ const loadThirdMesh = function () {
         }
     );
 }
+
+// EVENTS II
+
+const span_category_phones = document.querySelector('#span_category_phones');
+span_category_phones.addEventListener('click', () => {
+    loadedSecondMesh.visible = true;
+});
+
   

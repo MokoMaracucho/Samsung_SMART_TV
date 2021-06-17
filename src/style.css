@@ -17,7 +17,7 @@ canvas {
   background-color: #D2D2D2;
 }
 
-#menu {
+#div_menu_left {
   z-index: 2;
   position: absolute;
   width: 600px;
@@ -44,23 +44,27 @@ canvas {
   left: 13px;
 }
 
-#div_category_televisions {
+#span_category_televisions {
   position: relative;
 }
 
-#div_category_phones {
+#span_category_phones {
   position: relative;
   left: 35px;
 }
 
-#div_category_cameras {
+#span_category_cameras {
   position: relative;
   left: 75px;
 }
 
-#div_category_headphones {
+#span_category_headphones {
   position: relative;
   left: 115px;
+}
+
+.spans_category:hover {
+  cursor: pointer;
 }
 
 #go_backward {
@@ -174,7 +178,7 @@ canvas {
   transition: transform 1.5s ease-in-out;
 }
 
-.webgl {
+canvas {
   z-index: 1;
   position: absolute;
   left: 30%;
