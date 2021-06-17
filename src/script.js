@@ -27,12 +27,21 @@ const canvas = document.querySelector('canvas.webgl');
 const sizes = {
     width: (window.innerWidth / 100) * 70,
     height: window.innerHeight
-}
+};
+
+// CAMERA TARGET
+
+const cameraTarget_GEOMETRY = new THREE.BoxGeometry( 1, 1, 1 );
+const cameraTarget_MATERIAL = new THREE.MeshBasicMaterial( {color: 0xff0000} );
+const cameraTarget_MESH = new THREE.Mesh(cameraTarget_GEOMETRY, cameraTarget_MATERIAL);
+cameraTarget_MESH.position.y = 2;
+
+scene.add(cameraTarget_MESH);
 
 // CAMERA
 
 const camera = new THREE.PerspectiveCamera(35, sizes.width / sizes.height, 0.1, 100);
-camera.position.x = 10;
+camera.position.x = 0;
 camera.position.y = 10;
 camera.position.z = 20;
 
@@ -203,9 +212,10 @@ const ground_ALPHA_TEXTURE = textureLoader.load('/img/textures/Shadow_ALPHA_MAP.
 const loader = new GLTFLoader();
 
 const television_GROUP = new THREE.Group();
-const phone_GROUP = new THREE.Group();
+scene.add(television_GROUP);
+/* const phone_GROUP = new THREE.Group();
 const camera_GROUP = new THREE.Group();
-const headphone_GROUP = new THREE.Group();
+const headphone_GROUP = new THREE.Group(); */
 
 let television_MESH = new THREE.Object3D;
 let phone_MESH = new THREE.Object3D;
@@ -217,14 +227,13 @@ loader.load(
 	function (gltf) {
 		scene.add(gltf.scene);
         television_MESH = gltf.scene;
-        television_GROUP.add(television_MESH);
-        if("undefined" !== typeof television_MESH.activeItem) {
-            television_MESH.activeItem = true;
-        }
+        //television_MESH.parent(television_GROUP);
 		gltf.asset;
         gltf.scene.traverse(function(child) {
-            console.log(child);
+            //console.log(child);
+            //television_MESH.push(child);
         });
+        television_GROUP.add(television_MESH);
 
         // 1 = Key_power
 
@@ -558,8 +567,9 @@ const television_GROUND = new THREE.Mesh(ground_GEOMETRY, ground_MATERIAL);
 television_GROUND.rotation.x = - Math.PI / 2;
 
 television_GROUP.add(television_GROUND);
-
-scene.add(television_GROUP);
+if("undefined" !== typeof television_GROUP.activeItem) {
+    television_GROUP.activeItem = true;
+}
 
 // ANIMATE
 
@@ -567,6 +577,10 @@ const animate = function () {
     requestAnimationFrame( animate );
 
     television_GROUP.rotation.y += televisionGroup_ROTATION_Y;
+
+    console.log(camera.rotation.y)
+
+    camera.lookAt(cameraTarget_MESH.position.x, cameraTarget_MESH.position.y, cameraTarget_MESH.position.z);
 
     renderer.render(scene, camera);
     renderer.setClearColor(0xD2D2D2, 1);
@@ -597,7 +611,7 @@ const loadSecondMesh = function () {
         function (gltf) {
             scene.add(gltf.scene);
             phone_MESH = gltf.scene;
-            phone_MESH.position.z = -10;
+            phone_MESH.position.x = 10;
             phone_MESH.visible = false;
             if("undefined" !== typeof phone_MESH.activeItem) {
                 phone_MESH.activeItem = false;
@@ -628,7 +642,7 @@ const loadThirdMesh = function () {
         function (gltf) {
             scene.add(gltf.scene);
             camera_MESH = gltf.scene;
-            camera_MESH.position.z = -20;
+            camera_MESH.position.x = 10;
             camera_MESH.visible = false;
             if("undefined" !== typeof camera_MESH.activeItem) {
                 camera_MESH.activeItem = false;
@@ -659,7 +673,7 @@ const loadFourthMesh = function () {
         function (gltf) {
             scene.add(gltf.scene);
             headphone_MESH = gltf.scene;
-            headphone_MESH.position.z = -30;
+            headphone_MESH.position.y = 10;
             headphone_MESH.visible = false;
             if("undefined" !== typeof headphone_MESH.activeItem) {
                 headphone_MESH.activeItem = false;
@@ -687,8 +701,8 @@ const span_category_televisions_ELEMENT = document.querySelector('#span_category
 const span_category_televisions = document.querySelector('#span_category_televisions');
 span_category_televisions.addEventListener('click', () => {
     //setActiveItem();
-    television_MESH.visible = true;
-    television_MESH.activeItem = true;
+    television_GROUP.visible = true;
+    television_GROUP.activeItem = true;
     phone_MESH.visible = false;
     phone_MESH.activeItem = false;
     camera_MESH.visible = false;
@@ -703,14 +717,25 @@ const span_category_phones_ELEMENT = document.querySelector('#span_category_phon
 const span_category_phones = document.querySelector('#span_category_phones');
 span_category_phones.addEventListener('click', () => {
     //setActiveItem();
-    television_MESH.visible = false;
-    television_MESH.activeItem = false;
+    //television_GROUP.visible = false;
+    //television_GROUP.activeItem = false;
     phone_MESH.visible = true;
     phone_MESH.activeItem = true;
     camera_MESH.visible = false;
     camera_MESH.activeItem = false;
     headphone_MESH.visible = false;
     headphone_MESH.activeItem = false;
+
+    /* if(television_GROUP.activeItem = true) {
+        television_GROUP.activeItem = false;
+        //television_GROUP.visible  = false;
+        gsap.to(television_GROUP.position, {duration: 5, delay: 0, x: -10});
+    } */
+    gsap.to(controls.target, {duration: 5, x: 10});
+    gsap.to(cameraTarget_MESH.position, {duration: 5, x: 10});
+    gsap.to(camera.position, {duration: 5, x: 10});
+    gsap.to(camera.position, {duration: 5, y: 10});
+    gsap.to(camera.position, {duration: 5, z: 20});
 
 });
 
@@ -719,8 +744,8 @@ const span_category_cameras_ELEMENT = document.querySelector('#span_category_cam
 const span_category_cameras = document.querySelector('#span_category_cameras');
 span_category_cameras.addEventListener('click', () => {
     //setActiveItem();
-    television_MESH.visible = false;
-    television_MESH.activeItem = false;
+    television_GROUP.visible = false;
+    television_GROUP.activeItem = false;
     phone_MESH.visible = false;
     phone_MESH.activeItem = false;
     camera_MESH.visible = true;
@@ -735,8 +760,8 @@ const span_category_headphones_ELEMENT = document.querySelector('#span_category_
 const span_category_headphones = document.querySelector('#span_category_headphones');
 span_category_headphones.addEventListener('click', () => {
     //setActiveItem();
-    television_MESH.visible = false;
-    television_MESH.activeItem = false;
+    television_GROUP.visible = false;
+    television_GROUP.activeItem = false;
     phone_MESH.visible = false;
     phone_MESH.activeItem = false;
     camera_MESH.visible = false;
@@ -747,9 +772,9 @@ span_category_headphones.addEventListener('click', () => {
 });
 
 const setActiveItem = function() {
-    if (television_MESH.activeItem = true) {
-        television_MESH.activeItem = false;
-        television_MESH.visible  = false;
+    if (television_GROUP.activeItem = true) {
+        television_GROUP.activeItem = false;
+        television_GROUP.visible  = false;
     } else if (phone_MESH.activeItem = true) {
         phone_MESH.activeItem = false;
         phone_MESH.visible  = false;
