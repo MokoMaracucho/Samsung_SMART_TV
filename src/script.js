@@ -35,6 +35,7 @@ const cameraTarget_GEOMETRY = new THREE.BoxGeometry( 1, 1, 1 );
 const cameraTarget_MATERIAL = new THREE.MeshBasicMaterial( {color: 0xff0000} );
 const cameraTarget_MESH = new THREE.Mesh(cameraTarget_GEOMETRY, cameraTarget_MATERIAL);
 cameraTarget_MESH.position.y = 2;
+cameraTarget_MESH.visible = false;
 
 scene.add(cameraTarget_MESH);
 
@@ -611,7 +612,7 @@ const loadSecondMesh = function () {
         function (gltf) {
             scene.add(gltf.scene);
             phone_MESH = gltf.scene;
-            phone_MESH.position.x = 10;
+            phone_MESH.position.x = 20;
             phone_MESH.visible = false;
             if("undefined" !== typeof phone_MESH.activeItem) {
                 phone_MESH.activeItem = false;
@@ -731,11 +732,15 @@ span_category_phones.addEventListener('click', () => {
         //television_GROUP.visible  = false;
         gsap.to(television_GROUP.position, {duration: 5, delay: 0, x: -10});
     } */
-    gsap.to(controls.target, {duration: 5, x: 10});
-    gsap.to(cameraTarget_MESH.position, {duration: 5, x: 10});
-    gsap.to(camera.position, {duration: 5, x: 10});
-    gsap.to(camera.position, {duration: 5, y: 10});
-    gsap.to(camera.position, {duration: 5, z: 20});
+    gsap.to(controls.target, {duration: 2, x: 20});
+    gsap.to(cameraTarget_MESH.position, {duration: 2, x: 20});
+    gsap.to(camera.position, {duration: 2, x: 20});
+    gsap.to(camera.position, {duration: 2, y: 10});
+    gsap.to(camera.position, {duration: 2, z: 20});
+    
+    gsap.delayedCall(2, () => {
+        television_GROUP.visible = false;
+    });
 
 });
 
