@@ -127,6 +127,10 @@ const loadingManager = new THREE.LoadingManager(
 
                 gsap.delayedCall(0.5, () => {
                     loadThirdMesh();
+
+                    gsap.delayedCall(0.5, () => {
+                        loadFourthMesh();
+                    });
                 });
             });
             
@@ -205,12 +209,16 @@ const loader = new GLTFLoader();
 let loadedMesh = new THREE.Object3D;
 let loadedSecondMesh = new THREE.Object3D;
 let loadedThirdMesh = new THREE.Object3D;
+let loadedFourthMesh = new THREE.Object3D;
 
 loader.load(
 	'gltf/Samsung_SMART_TV.gltf',
 	function (gltf) {
 		scene.add(gltf.scene);
         loadedMesh = gltf.scene;
+        if("undefined" !== typeof loadedMesh.activeItem) {
+            loadedMesh.activeItem = true;
+        }
 		gltf.asset;
         gltf.scene.traverse(function(child) {
             console.log(child);
@@ -587,6 +595,9 @@ const loadSecondMesh = function () {
             loadedSecondMesh = gltf.scene;
             loadedSecondMesh.position.z = -10;
             loadedSecondMesh.visible = false;
+            if("undefined" !== typeof loadedSecondMesh.activeItem) {
+                loadedSecondMesh.activeItem = false;
+            }
             gltf.asset;
             gltf.scene.traverse(function(child) {
                 console.log(child);
@@ -609,12 +620,46 @@ const loadThirdMesh = function () {
     console.log("Start load 3");
 
     loader.load(
-        'gltf/Beats_Studio_3.gltf',
+        'gltf/Canon_G9_II_Black.gltf',
         function (gltf) {
             scene.add(gltf.scene);
             loadedThirdMesh = gltf.scene;
             loadedThirdMesh.position.z = -20;
             loadedThirdMesh.visible = false;
+            if("undefined" !== typeof loadedThirdMesh.activeItem) {
+                loadedThirdMesh.activeItem = false;
+            }
+            gltf.asset;
+            gltf.scene.traverse(function(child) {
+                console.log(child);
+            });
+        },
+        
+        function (xhr) {
+            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+        },
+        
+        function ( error ) {
+            console.log('An error happened');
+        }
+    );
+}
+
+// LOADER THIRD MESH
+
+const loadFourthMesh = function () {
+    console.log("Start load 4");
+
+    loader.load(
+        'gltf/Beats_Studio_3.gltf',
+        function (gltf) {
+            scene.add(gltf.scene);
+            loadedFourthMesh = gltf.scene;
+            loadedFourthMesh.position.z = -30;
+            loadedFourthMesh.visible = false;
+            if("undefined" !== typeof loadedFourthMesh.activeItem) {
+                loadedFourthMesh.activeItem = false;
+            }
             gltf.asset;
             gltf.scene.traverse(function(child) {
                 console.log(child);
@@ -633,9 +678,84 @@ const loadThirdMesh = function () {
 
 // EVENTS II
 
+const span_category_televisions_ELEMENT = document.querySelector('#span_category_televisions');
+
+const span_category_televisions = document.querySelector('#span_category_televisions');
+span_category_televisions.addEventListener('click', () => {
+    //setActiveItem();
+    loadedMesh.visible = true;
+    loadedMesh.activeItem = true;
+    loadedSecondMesh.visible = false;
+    loadedSecondMesh.activeItem = false;
+    loadedThirdMesh.visible = false;
+    loadedThirdMesh.activeItem = false;
+    loadedFourthMesh.visible = false;
+    loadedFourthMesh.activeItem = false;
+
+});
+
+const span_category_phones_ELEMENT = document.querySelector('#span_category_phones');
+
 const span_category_phones = document.querySelector('#span_category_phones');
 span_category_phones.addEventListener('click', () => {
+    //setActiveItem();
+    loadedMesh.visible = false;
+    loadedMesh.activeItem = false;
     loadedSecondMesh.visible = true;
+    loadedSecondMesh.activeItem = true;
+    loadedThirdMesh.visible = false;
+    loadedThirdMesh.activeItem = false;
+    loadedFourthMesh.visible = false;
+    loadedFourthMesh.activeItem = false;
+
 });
+
+const span_category_cameras_ELEMENT = document.querySelector('#span_category_cameras');
+
+const span_category_cameras = document.querySelector('#span_category_cameras');
+span_category_cameras.addEventListener('click', () => {
+    //setActiveItem();
+    loadedMesh.visible = false;
+    loadedMesh.activeItem = false;
+    loadedSecondMesh.visible = false;
+    loadedSecondMesh.activeItem = false;
+    loadedThirdMesh.visible = true;
+    loadedThirdMesh.activeItem = true;
+    loadedFourthMesh.visible = false;
+    loadedFourthMesh.activeItem = false;
+
+});
+
+const span_category_headphones_ELEMENT = document.querySelector('#span_category_headphones');
+
+const span_category_headphones = document.querySelector('#span_category_headphones');
+span_category_headphones.addEventListener('click', () => {
+    //setActiveItem();
+    loadedMesh.visible = false;
+    loadedMesh.activeItem = false;
+    loadedSecondMesh.visible = false;
+    loadedSecondMesh.activeItem = false;
+    loadedThirdMesh.visible = false;
+    loadedThirdMesh.activeItem = false;
+    loadedFourthMesh.visible = true;
+    loadedFourthMesh.activeItem = true;
+
+});
+
+const setActiveItem = function() {
+    if (loadedMesh.activeItem = true) {
+        loadedMesh.activeItem = false;
+        loadedMesh.visible  = false;
+    } else if (loadedSecondMesh.activeItem = true) {
+        loadedSecondMesh.activeItem = false;
+        loadedSecondMesh.visible  = false;
+    } else if (loadedThirdMesh.activeItem = true) {
+        loadedThirdMesh.activeItem = false;
+        loadedThirdMesh.visible  = false;
+    } else {
+        loadedFourthMesh.activeItem = false;
+        loadedFourthMesh.visible  = false;
+    }
+}
 
   
