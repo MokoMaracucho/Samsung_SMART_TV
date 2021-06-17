@@ -13,10 +13,6 @@ html, body {
     background-color: #D2D2D2;
 }
 
-canvas {
-  background-color: #D2D2D2;
-}
-
 #div_menu_left {
   z-index: 2;
   position: absolute;
@@ -181,5 +177,6 @@ canvas {
 canvas {
   z-index: 1;
   position: absolute;
-  left: 30%;
+  left: 12%;
+  background-color: #D2D2D2;
 }

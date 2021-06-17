@@ -25,16 +25,18 @@ const canvas = document.querySelector('canvas.webgl');
 // SIZES
 
 const sizes = {
-    width: (window.innerWidth / 100) * 70,
+    width: window.innerWidth,
     height: window.innerHeight
 };
 
 // CAMERA TARGET
 
+const hauteurTarget = 3;
+
 const cameraTarget_GEOMETRY = new THREE.BoxGeometry( 1, 1, 1 );
 const cameraTarget_MATERIAL = new THREE.MeshBasicMaterial( {color: 0xff0000} );
 const cameraTarget_MESH = new THREE.Mesh(cameraTarget_GEOMETRY, cameraTarget_MATERIAL);
-cameraTarget_MESH.position.y = 2;
+cameraTarget_MESH.position.y = hauteurTarget;
 cameraTarget_MESH.visible = false;
 
 scene.add(cameraTarget_MESH);
@@ -50,7 +52,7 @@ scene.add(camera);
 
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
-controls.target.y = 2;
+controls.target.y = hauteurTarget;
 //controls.minDistance = ;
 //controls.maxDistance = ;
 controls.update();
