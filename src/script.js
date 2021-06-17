@@ -68,20 +68,16 @@ scene.add(ambientLight);
 
 // EVENTS
 
-
-let loadedMesh_ROTATION_Y = 0.005;
-let ground_ROTATION_Z = 0.005;
+let televisionGroup_ROTATION_Y = 0.005;
 
 const canvas_html = document.querySelector('.webgl');
 
-canvas.addEventListener('pointerdown', e => {
-    loadedMesh_ROTATION_Y = 0;
-    ground_ROTATION_Z = 0;
+canvas_html.addEventListener('pointerdown', e => {
+    televisionGroup_ROTATION_Y = 0;
 });
 
 canvas.addEventListener('pointerup', e => {
-    loadedMesh_ROTATION_Y = 0.005;
-    ground_ROTATION_Z = 0.005;
+    televisionGroup_ROTATION_Y = 0.005;
 });
 
 // OVERLAY
@@ -206,18 +202,24 @@ const ground_ALPHA_TEXTURE = textureLoader.load('/img/textures/Shadow_ALPHA_MAP.
 
 const loader = new GLTFLoader();
 
-let loadedMesh = new THREE.Object3D;
-let loadedSecondMesh = new THREE.Object3D;
-let loadedThirdMesh = new THREE.Object3D;
-let loadedFourthMesh = new THREE.Object3D;
+const television_GROUP = new THREE.Group();
+const phone_GROUP = new THREE.Group();
+const camera_GROUP = new THREE.Group();
+const headphone_GROUP = new THREE.Group();
+
+let television_MESH = new THREE.Object3D;
+let phone_MESH = new THREE.Object3D;
+let camera_MESH = new THREE.Object3D;
+let headphone_MESH = new THREE.Object3D;
 
 loader.load(
 	'gltf/Samsung_SMART_TV.gltf',
 	function (gltf) {
 		scene.add(gltf.scene);
-        loadedMesh = gltf.scene;
-        if("undefined" !== typeof loadedMesh.activeItem) {
-            loadedMesh.activeItem = true;
+        television_MESH = gltf.scene;
+        television_GROUP.add(television_MESH);
+        if("undefined" !== typeof television_MESH.activeItem) {
+            television_MESH.activeItem = true;
         }
 		gltf.asset;
         gltf.scene.traverse(function(child) {
@@ -552,17 +554,19 @@ loader.load(
 
 const ground_GEOMETRY = new THREE.PlaneGeometry(20, 20);
 const ground_MATERIAL = new THREE.MeshBasicMaterial( {color: 0x000000, transparent: false, alphaMap: ground_ALPHA_TEXTURE} );
-const ground = new THREE.Mesh(ground_GEOMETRY, ground_MATERIAL);
-ground.rotation.x = - Math.PI / 2;
-scene.add(ground);
+const television_GROUND = new THREE.Mesh(ground_GEOMETRY, ground_MATERIAL);
+television_GROUND.rotation.x = - Math.PI / 2;
+
+television_GROUP.add(television_GROUND);
+
+scene.add(television_GROUP);
 
 // ANIMATE
 
 const animate = function () {
     requestAnimationFrame( animate );
 
-    loadedMesh.rotation.y += loadedMesh_ROTATION_Y;
-    ground.rotation.z += ground_ROTATION_Z;
+    television_GROUP.rotation.y += televisionGroup_ROTATION_Y;
 
     renderer.render(scene, camera);
     renderer.setClearColor(0xD2D2D2, 1);
@@ -592,11 +596,11 @@ const loadSecondMesh = function () {
         'gltf/iPhone_12_pro_obj.gltf',
         function (gltf) {
             scene.add(gltf.scene);
-            loadedSecondMesh = gltf.scene;
-            loadedSecondMesh.position.z = -10;
-            loadedSecondMesh.visible = false;
-            if("undefined" !== typeof loadedSecondMesh.activeItem) {
-                loadedSecondMesh.activeItem = false;
+            phone_MESH = gltf.scene;
+            phone_MESH.position.z = -10;
+            phone_MESH.visible = false;
+            if("undefined" !== typeof phone_MESH.activeItem) {
+                phone_MESH.activeItem = false;
             }
             gltf.asset;
             gltf.scene.traverse(function(child) {
@@ -623,11 +627,11 @@ const loadThirdMesh = function () {
         'gltf/Canon_G9_II_Black.gltf',
         function (gltf) {
             scene.add(gltf.scene);
-            loadedThirdMesh = gltf.scene;
-            loadedThirdMesh.position.z = -20;
-            loadedThirdMesh.visible = false;
-            if("undefined" !== typeof loadedThirdMesh.activeItem) {
-                loadedThirdMesh.activeItem = false;
+            camera_MESH = gltf.scene;
+            camera_MESH.position.z = -20;
+            camera_MESH.visible = false;
+            if("undefined" !== typeof camera_MESH.activeItem) {
+                camera_MESH.activeItem = false;
             }
             gltf.asset;
             gltf.scene.traverse(function(child) {
@@ -654,11 +658,11 @@ const loadFourthMesh = function () {
         'gltf/Beats_Studio_3.gltf',
         function (gltf) {
             scene.add(gltf.scene);
-            loadedFourthMesh = gltf.scene;
-            loadedFourthMesh.position.z = -30;
-            loadedFourthMesh.visible = false;
-            if("undefined" !== typeof loadedFourthMesh.activeItem) {
-                loadedFourthMesh.activeItem = false;
+            headphone_MESH = gltf.scene;
+            headphone_MESH.position.z = -30;
+            headphone_MESH.visible = false;
+            if("undefined" !== typeof headphone_MESH.activeItem) {
+                headphone_MESH.activeItem = false;
             }
             gltf.asset;
             gltf.scene.traverse(function(child) {
@@ -683,14 +687,14 @@ const span_category_televisions_ELEMENT = document.querySelector('#span_category
 const span_category_televisions = document.querySelector('#span_category_televisions');
 span_category_televisions.addEventListener('click', () => {
     //setActiveItem();
-    loadedMesh.visible = true;
-    loadedMesh.activeItem = true;
-    loadedSecondMesh.visible = false;
-    loadedSecondMesh.activeItem = false;
-    loadedThirdMesh.visible = false;
-    loadedThirdMesh.activeItem = false;
-    loadedFourthMesh.visible = false;
-    loadedFourthMesh.activeItem = false;
+    television_MESH.visible = true;
+    television_MESH.activeItem = true;
+    phone_MESH.visible = false;
+    phone_MESH.activeItem = false;
+    camera_MESH.visible = false;
+    camera_MESH.activeItem = false;
+    headphone_MESH.visible = false;
+    headphone_MESH.activeItem = false;
 
 });
 
@@ -699,14 +703,14 @@ const span_category_phones_ELEMENT = document.querySelector('#span_category_phon
 const span_category_phones = document.querySelector('#span_category_phones');
 span_category_phones.addEventListener('click', () => {
     //setActiveItem();
-    loadedMesh.visible = false;
-    loadedMesh.activeItem = false;
-    loadedSecondMesh.visible = true;
-    loadedSecondMesh.activeItem = true;
-    loadedThirdMesh.visible = false;
-    loadedThirdMesh.activeItem = false;
-    loadedFourthMesh.visible = false;
-    loadedFourthMesh.activeItem = false;
+    television_MESH.visible = false;
+    television_MESH.activeItem = false;
+    phone_MESH.visible = true;
+    phone_MESH.activeItem = true;
+    camera_MESH.visible = false;
+    camera_MESH.activeItem = false;
+    headphone_MESH.visible = false;
+    headphone_MESH.activeItem = false;
 
 });
 
@@ -715,14 +719,14 @@ const span_category_cameras_ELEMENT = document.querySelector('#span_category_cam
 const span_category_cameras = document.querySelector('#span_category_cameras');
 span_category_cameras.addEventListener('click', () => {
     //setActiveItem();
-    loadedMesh.visible = false;
-    loadedMesh.activeItem = false;
-    loadedSecondMesh.visible = false;
-    loadedSecondMesh.activeItem = false;
-    loadedThirdMesh.visible = true;
-    loadedThirdMesh.activeItem = true;
-    loadedFourthMesh.visible = false;
-    loadedFourthMesh.activeItem = false;
+    television_MESH.visible = false;
+    television_MESH.activeItem = false;
+    phone_MESH.visible = false;
+    phone_MESH.activeItem = false;
+    camera_MESH.visible = true;
+    camera_MESH.activeItem = true;
+    headphone_MESH.visible = false;
+    headphone_MESH.activeItem = false;
 
 });
 
@@ -731,30 +735,30 @@ const span_category_headphones_ELEMENT = document.querySelector('#span_category_
 const span_category_headphones = document.querySelector('#span_category_headphones');
 span_category_headphones.addEventListener('click', () => {
     //setActiveItem();
-    loadedMesh.visible = false;
-    loadedMesh.activeItem = false;
-    loadedSecondMesh.visible = false;
-    loadedSecondMesh.activeItem = false;
-    loadedThirdMesh.visible = false;
-    loadedThirdMesh.activeItem = false;
-    loadedFourthMesh.visible = true;
-    loadedFourthMesh.activeItem = true;
+    television_MESH.visible = false;
+    television_MESH.activeItem = false;
+    phone_MESH.visible = false;
+    phone_MESH.activeItem = false;
+    camera_MESH.visible = false;
+    camera_MESH.activeItem = false;
+    headphone_MESH.visible = true;
+    headphone_MESH.activeItem = true;
 
 });
 
 const setActiveItem = function() {
-    if (loadedMesh.activeItem = true) {
-        loadedMesh.activeItem = false;
-        loadedMesh.visible  = false;
-    } else if (loadedSecondMesh.activeItem = true) {
-        loadedSecondMesh.activeItem = false;
-        loadedSecondMesh.visible  = false;
-    } else if (loadedThirdMesh.activeItem = true) {
-        loadedThirdMesh.activeItem = false;
-        loadedThirdMesh.visible  = false;
+    if (television_MESH.activeItem = true) {
+        television_MESH.activeItem = false;
+        television_MESH.visible  = false;
+    } else if (phone_MESH.activeItem = true) {
+        phone_MESH.activeItem = false;
+        phone_MESH.visible  = false;
+    } else if (camera_MESH.activeItem = true) {
+        camera_MESH.activeItem = false;
+        camera_MESH.visible  = false;
     } else {
-        loadedFourthMesh.activeItem = false;
-        loadedFourthMesh.visible  = false;
+        headphone_MESH.activeItem = false;
+        headphone_MESH.visible  = false;
     }
 }
 
