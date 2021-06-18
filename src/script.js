@@ -20,7 +20,7 @@ const scene = new THREE.Scene();
 
 // CANVAS
 
-const canvas = document.querySelector('canvas.webgl');
+const canvas = document.querySelector('canvas');
 
 // SIZES
 
@@ -61,18 +61,20 @@ controls.update();
 
 // RAYCASTER
 
-const mousePosition = new THREE.Vector2();
-
-const canvas_html = document.querySelector('.webgl');
+const mousePosition_SCREEN = new THREE.Vector2();
+const mousePosition_THREE = new THREE.Vector2();
 
 canvas.addEventListener('mousemove', (event) => {
-    mousePosition.x = Math.ceil(event.clientX - (windowSizes.width / 100) * 12);
-    mousePosition.y = event.clientY;
+    mousePosition_SCREEN.x = event.clientX - Math.ceil(window.innerWidth * 0.12);
+    mousePosition_SCREEN.y = event.clientY;
+    
+    let canvasWidth = window.innerWidth - Math.ceil(window.innerWidth * 0.12);
+    let canvasHeight = window.innerHeight;
 
-    let mousePositionX = mousePosition.x - (windowSizes.width / 100) * 12;
-    let difference = mousePosition.x - Math.ceil(mousePositionX);
+    mousePosition_THREE.x = ((2 / canvasWidth) * mousePosition_SCREEN.x) - 1;
+    mousePosition_THREE.y = ((2 / canvasHeight) * mousePosition_SCREEN.y) - 1;
 
-    console.log("(X: " + mousePosition.x + ", Y: " + mousePosition.y);
+    console.log("------------------------------------> (X: " +  mousePosition_THREE.x + ", Y: " +  mousePosition_THREE.y);
 });
 
 // RENDERER
@@ -101,7 +103,7 @@ scene.add(pointLight);
 
 let televisionGroup_ROTATION_Y = 0.005;
 
-canvas_html.addEventListener('pointerdown', () => {
+canvas.addEventListener('pointerdown', () => {
     televisionGroup_ROTATION_Y = 0;
 });
 

@@ -180,3 +180,7 @@ canvas {
   left: 12%;
   background-color: #D2D2D2;
 }
+
+video {
+  width: 0%;
+}
