@@ -59,6 +59,22 @@ controls.target.y = hauteurTargetCamera;
 //controls.maxDistance = ;
 controls.update();
 
+// RAYCASTER
+
+const mousePosition = new THREE.Vector2();
+
+const canvas_html = document.querySelector('.webgl');
+
+canvas.addEventListener('mousemove', (event) => {
+    mousePosition.x = Math.ceil(event.clientX - (windowSizes.width / 100) * 12);
+    mousePosition.y = event.clientY;
+
+    let mousePositionX = mousePosition.x - (windowSizes.width / 100) * 12;
+    let difference = mousePosition.x - Math.ceil(mousePositionX);
+
+    console.log("(X: " + mousePosition.x + ", Y: " + mousePosition.y);
+});
+
 // RENDERER
 
 const renderer = new THREE.WebGLRenderer({
@@ -85,13 +101,11 @@ scene.add(pointLight);
 
 let televisionGroup_ROTATION_Y = 0.005;
 
-const canvas_html = document.querySelector('.webgl');
-
-canvas_html.addEventListener('pointerdown', e => {
+canvas_html.addEventListener('pointerdown', () => {
     televisionGroup_ROTATION_Y = 0;
 });
 
-canvas.addEventListener('pointerup', e => {
+canvas.addEventListener('pointerup', () => {
     televisionGroup_ROTATION_Y = 0.005;
 });
 
@@ -891,7 +905,7 @@ const animate = function () {
     camera.lookAt(cameraTarget_MESH.position.x, cameraTarget_MESH.position.y, cameraTarget_MESH.position.z);
 
     renderer.render(scene, camera);
-    renderer.setClearColor(0xD2D2D2, 1);
+    renderer.setClearColor(0xFF0000, 1);
 };
 
 // RESIZE
