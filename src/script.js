@@ -602,6 +602,7 @@ const loadPhoneMesh = function () {
             gltf.scene.traverse(function(child) {
                 console.log(child);
             });
+            phone_GROUP.add(phone_MESH);
         },
         
         function (xhr) {
@@ -640,6 +641,7 @@ const loadCameraMesh = function () {
             gltf.scene.traverse(function(child) {
                 console.log(child);
             });
+            camera_GROUP.add(camera_MESH);
         },
         
         function (xhr) {
@@ -678,6 +680,7 @@ const loadHeadphoneMesh = function () {
             gltf.scene.traverse(function(child) {
                 console.log(child);
             });
+            headphone_GROUP.add(headphone_MESH);
         },
         
         function (xhr) {
