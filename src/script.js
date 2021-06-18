@@ -24,35 +24,37 @@ const canvas = document.querySelector('canvas.webgl');
 
 // SIZES
 
-const sizes = {
+const windowSizes = {
     width: window.innerWidth,
     height: window.innerHeight
 };
 
 // CAMERA TARGET
 
-const hauteurTarget = 3;
+const hauteurTargetCamera = 3;
 
 const cameraTarget_GEOMETRY = new THREE.BoxGeometry( 1, 1, 1 );
 const cameraTarget_MATERIAL = new THREE.MeshBasicMaterial( {color: 0xff0000} );
 const cameraTarget_MESH = new THREE.Mesh(cameraTarget_GEOMETRY, cameraTarget_MATERIAL);
-cameraTarget_MESH.position.y = hauteurTarget;
+cameraTarget_MESH.position.y = hauteurTargetCamera;
 cameraTarget_MESH.visible = false;
 
 scene.add(cameraTarget_MESH);
 
 // CAMERA
 
-const camera = new THREE.PerspectiveCamera(35, sizes.width / sizes.height, 0.1, 100);
+const camera = new THREE.PerspectiveCamera(35, windowSizes.width / windowSizes.height, 0.1, 100);
 camera.position.x = 0;
 camera.position.y = 10;
 camera.position.z = 20;
 
 scene.add(camera);
 
+// CONTROLS
+
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
-controls.target.y = hauteurTarget;
+controls.target.y = hauteurTargetCamera;
 //controls.minDistance = ;
 //controls.maxDistance = ;
 controls.update();
@@ -64,19 +66,20 @@ const renderer = new THREE.WebGLRenderer({
     antialias: true,
     alpha: true
 });
-renderer.setSize(sizes.width, sizes.height);
+renderer.setSize(windowSizes.width, windowSizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 // LIGHT
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 
-const pointLight = new THREE.PointLight(0xffffff, 0.5);
+const pointLight = new THREE.PointLight(0xffffff, 0.2);
 pointLight.position.x = 2;
 pointLight.position.y = 3;
 pointLight.position.z = 4;
 
 scene.add(ambientLight);
+scene.add(pointLight);
 
 // EVENTS
 
@@ -570,9 +573,7 @@ const television_GROUND = new THREE.Mesh(ground_GEOMETRY, ground_MATERIAL);
 television_GROUND.rotation.x = - Math.PI / 2;
 
 television_GROUP.add(television_GROUND);
-if("undefined" !== typeof television_GROUP.activeItem) {
-    television_GROUP.activeItem = true;
-}
+television_GROUP.activeItem = true;
 
 // ANIMATE
 
@@ -592,19 +593,19 @@ const animate = function () {
 // RESIZE
 
 window.addEventListener('resize', () => {
-    sizes.width = window.innerWidth;
-    sizes.height = window.innerHeight;
+    windowSizes.width = window.innerWidth;
+    windowSizes.height = window.innerHeight;
     
-    camera.aspect = sizes.width / sizes.height;
+    camera.aspect = windowSizes.width / windowSizes.height;
     camera.updateProjectionMatrix();
     
-    renderer.setSize(sizes.width, sizes.height);
+    renderer.setSize(windowSizes.width, windowSizes.height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
 animate();
 
-// LOADER SECONBD MESH
+// LOADER SECOND MESH
 
 const loadSecondMesh = function () {
     console.log("Start load 2");
@@ -616,9 +617,7 @@ const loadSecondMesh = function () {
             phone_MESH = gltf.scene;
             phone_MESH.position.x = 20;
             phone_MESH.visible = false;
-            if("undefined" !== typeof phone_MESH.activeItem) {
-                phone_MESH.activeItem = false;
-            }
+            phone_MESH.activeItem = false;
             gltf.asset;
             gltf.scene.traverse(function(child) {
                 console.log(child);
@@ -647,9 +646,7 @@ const loadThirdMesh = function () {
             camera_MESH = gltf.scene;
             camera_MESH.position.x = 10;
             camera_MESH.visible = false;
-            if("undefined" !== typeof camera_MESH.activeItem) {
-                camera_MESH.activeItem = false;
-            }
+            camera_MESH.activeItem = false;
             gltf.asset;
             gltf.scene.traverse(function(child) {
                 console.log(child);
@@ -678,9 +675,7 @@ const loadFourthMesh = function () {
             headphone_MESH = gltf.scene;
             headphone_MESH.position.y = 10;
             headphone_MESH.visible = false;
-            if("undefined" !== typeof headphone_MESH.activeItem) {
-                headphone_MESH.activeItem = false;
-            }
+            headphone_MESH.activeItem = false;
             gltf.asset;
             gltf.scene.traverse(function(child) {
                 console.log(child);
@@ -702,6 +697,9 @@ const loadFourthMesh = function () {
 const span_category_televisions_ELEMENT = document.querySelector('#span_category_televisions');
 
 span_category_televisions.addEventListener('click', () => {
+
+
+
     //setActiveItem();
     television_GROUP.visible = true;
     television_GROUP.activeItem = true;
@@ -717,30 +715,24 @@ span_category_televisions.addEventListener('click', () => {
 const span_category_phones_ELEMENT = document.querySelector('#span_category_phones');
 
 span_category_phones.addEventListener('click', () => {
-    //setActiveItem();
-    television_GROUP.visible = false;
-    television_GROUP.activeItem = false;
+
+    console.log("------------------------------------> television_GROUP.activeItem : " + television_GROUP.activeItem);
+    console.log("------------------------------------> phone_MESH.activeItem : " + phone_MESH.activeItem);
+
+    setActiveItemFalse();
+
     phone_MESH.visible = true;
     phone_MESH.activeItem = true;
-    camera_MESH.visible = false;
-    camera_MESH.activeItem = false;
-    headphone_MESH.visible = false;
-    headphone_MESH.activeItem = false;
-
-    /* if(television_GROUP.activeItem = true) {
-        television_GROUP.activeItem = false;
-        //television_GROUP.visible  = false;
-        gsap.to(television_GROUP.position, {duration: 5, delay: 0, x: -10});
-    } */
+    
     gsap.to(controls.target, {duration: 2, x: 20});
     gsap.to(cameraTarget_MESH.position, {duration: 2, x: 20});
     gsap.to(camera.position, {duration: 2, x: 20});
     gsap.to(camera.position, {duration: 2, y: 10});
     gsap.to(camera.position, {duration: 2, z: 20});
     
-    gsap.delayedCall(2, () => {
+    /* gsap.delayedCall(2, () => {
         television_GROUP.visible = false;
-    });
+    }); */
 
 });
 
@@ -776,18 +768,22 @@ span_category_headphones.addEventListener('click', () => {
 
 });
 
-const setActiveItem = function() {
-    if (television_GROUP.activeItem = true) {
+// SET ACTIVE ITEM FALSE
+
+const setActiveItemFalse = function() {
+    if (television_GROUP.activeItem == true) {
         television_GROUP.activeItem = false;
-        television_GROUP.visible  = false;
-    } else if (phone_MESH.activeItem = true) {
+        gsap.delayedCall(2, () => {
+            television_GROUP.visible = false;
+        });
+    } else if (phone_MESH.activeItem == true) {
         phone_MESH.activeItem = false;
         phone_MESH.visible  = false;
-    } else if (camera_MESH.activeItem = true) {
+    } else if (camera_MESH.activeItem == true) {
         camera_MESH.activeItem = false;
         camera_MESH.visible  = false;
     } else {
-        headphone_MESH.activeItem = false;
+        headphone_MESH.activeItem == false;
         headphone_MESH.visible  = false;
     }
 }
