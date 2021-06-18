@@ -128,7 +128,6 @@ const loadingBarElement = document.querySelector('.loading-bar');
 const loadingManager = new THREE.LoadingManager(
     () => {
         gsap.delayedCall(0.5, () => {
-            console.log("DONE");
             gsap.to(overlayMaterial.uniforms.uAlpha, {duration: 3, value: 0});
             loadingBarElement.classList.add('ended');
             loadingBarElement.style.transform = '';
@@ -148,7 +147,6 @@ const loadingManager = new THREE.LoadingManager(
         });
     },
     (itemUrl, itemsLoaded, itemsTotal) => {
-        console.log(itemUrl);
         const progressRatio = itemsLoaded / itemsTotal;
         loadingBarElement.style.transform = 'scaleX(' + progressRatio + ')';
     }
@@ -600,10 +598,6 @@ const loadPhoneMesh = function () {
         function (gltf) {
             scene.add(gltf.scene);
             phone_MESH = gltf.scene;
-            phone_MESH.position.x = 20;
-            phone_MESH.visible = false;
-            phone_MESH.activeItem = false;
-            television_GROUP.positionItem = 2;
             gltf.asset;
             gltf.scene.traverse(function(child) {
                 console.log(child);
@@ -642,9 +636,6 @@ const loadCameraMesh = function () {
         function (gltf) {
             scene.add(gltf.scene);
             camera_MESH = gltf.scene;
-            camera_MESH.position.x = 10;
-            camera_MESH.visible = false;
-            camera_MESH.activeItem = false;
             gltf.asset;
             gltf.scene.traverse(function(child) {
                 console.log(child);
@@ -683,9 +674,6 @@ const loadHeadphoneMesh = function () {
         function (gltf) {
             scene.add(gltf.scene);
             headphone_MESH = gltf.scene;
-            headphone_MESH.position.y = 10;
-            headphone_MESH.visible = false;
-            headphone_MESH.activeItem = false;
             gltf.asset;
             gltf.scene.traverse(function(child) {
                 console.log(child);
@@ -712,7 +700,7 @@ headphone_GROUND.rotation.x = - Math.PI / 2;
 headphone_GROUP.add(headphone_GROUND);
 headphone_GROUP.activeItem = false;
 headphone_GROUP.visible = false;
-headphone_GROUP.positionItem = 3;
+headphone_GROUP.positionItem = 4;
 
 // EVENTS II
 
@@ -720,18 +708,28 @@ const span_category_televisions_ELEMENT = document.querySelector('#span_category
 
 span_category_televisions.addEventListener('click', () => {
 
+    console.log("------------------------------------> television_GROUP.activeItem : " + television_GROUP.activeItem);
+    console.log("------------------------------------> phone_GROUP.activeItem : " + phone_GROUP.activeItem);
+    console.log("------------------------------------> camera_GROUP.activeItem : " + camera_GROUP.activeItem);
+    console.log("------------------------------------> headphone_GROUP.activeItem : " + headphone_GROUP.activeItem);
 
+    let PreviewItemDatas = setActiveItemFalse();
 
-    //setActiveItem();
     television_GROUP.visible = true;
     television_GROUP.activeItem = true;
-    phone_MESH.visible = false;
-    phone_MESH.activeItem = false;
-    camera_MESH.visible = false;
-    camera_MESH.activeItem = false;
-    headphone_MESH.visible = false;
-    headphone_MESH.activeItem = false;
 
+    let positionNextItem = television_GROUP.positionItem;
+
+    let positionXNextItem = setPositionXNextItem(PreviewItemDatas, positionNextItem);
+
+    television_GROUP.position.x = positionXNextItem;
+
+    gsap.to(controls.target, {duration: 2, x: positionXNextItem});
+    gsap.to(cameraTarget_MESH.position, {duration: 2, x: positionXNextItem});
+    gsap.to(camera.position, {duration: 2, x: positionXNextItem});
+
+    gsap.to(camera.position, {duration: 2, y: 10});
+    gsap.to(camera.position, {duration: 2, z: 20});
 });
 
 const span_category_phones_ELEMENT = document.querySelector('#span_category_phones');
@@ -739,82 +737,146 @@ const span_category_phones_ELEMENT = document.querySelector('#span_category_phon
 span_category_phones.addEventListener('click', () => {
 
     console.log("------------------------------------> television_GROUP.activeItem : " + television_GROUP.activeItem);
-    console.log("------------------------------------> phone_MESH.activeItem : " + phone_MESH.activeItem);
+    console.log("------------------------------------> phone_GROUP.activeItem : " + phone_GROUP.activeItem);
+    console.log("------------------------------------> camera_GROUP.activeItem : " + camera_GROUP.activeItem);
+    console.log("------------------------------------> headphone_GROUP.activeItem : " + headphone_GROUP.activeItem);
 
-    setActiveItemFalse();
+    let PreviewItemDatas = setActiveItemFalse();
 
-    phone_MESH.visible = true;
-    phone_MESH.activeItem = true;
+    phone_GROUP.visible = true;
+    phone_GROUP.activeItem = true;
 
-    gsap.to(controls.target, {duration: 2, x: 20});
-    gsap.to(cameraTarget_MESH.position, {duration: 2, x: 20});
-    gsap.to(camera.position, {duration: 2, x: 20});
+    let positionNextItem = phone_GROUP.positionItem;
+
+    let positionXNextItem = setPositionXNextItem(PreviewItemDatas, positionNextItem);
+
+    phone_GROUP.position.x = positionXNextItem;
+
+    gsap.to(controls.target, {duration: 2, x: positionXNextItem});
+    gsap.to(cameraTarget_MESH.position, {duration: 2, x: positionXNextItem});
+    gsap.to(camera.position, {duration: 2, x: positionXNextItem});
+
     gsap.to(camera.position, {duration: 2, y: 10});
     gsap.to(camera.position, {duration: 2, z: 20});
-    
-    /* gsap.delayedCall(2, () => {
-        television_GROUP.visible = false;
-    }); */
-
 });
-
-const span_category_cameras_ELEMENT = document.querySelector('#span_category_cameras');
 
 const span_category_cameras = document.querySelector('#span_category_cameras');
-span_category_cameras.addEventListener('click', () => {
-    //setActiveItem();
-    television_GROUP.visible = false;
-    television_GROUP.activeItem = false;
-    phone_MESH.visible = false;
-    phone_MESH.activeItem = false;
-    camera_MESH.visible = true;
-    camera_MESH.activeItem = true;
-    headphone_MESH.visible = false;
-    headphone_MESH.activeItem = false;
 
+span_category_cameras.addEventListener('click', () => {
+
+    console.log("------------------------------------> television_GROUP.activeItem : " + television_GROUP.activeItem);
+    console.log("------------------------------------> phone_GROUP.activeItem : " + phone_GROUP.activeItem);
+    console.log("------------------------------------> camera_GROUP.activeItem : " + camera_GROUP.activeItem);
+    console.log("------------------------------------> headphone_GROUP.activeItem : " + headphone_GROUP.activeItem);
+
+    let PreviewItemDatas = setActiveItemFalse();
+
+    camera_GROUP.visible = true;
+    camera_GROUP.activeItem = true;
+
+    let positionNextItem = camera_GROUP.positionItem;
+
+    let positionXNextItem = setPositionXNextItem(PreviewItemDatas, positionNextItem);
+
+    camera_GROUP.position.x = positionXNextItem;
+
+    gsap.to(controls.target, {duration: 2, x: positionXNextItem});
+    gsap.to(cameraTarget_MESH.position, {duration: 2, x: positionXNextItem});
+    gsap.to(camera.position, {duration: 2, x: positionXNextItem});
+
+    gsap.to(camera.position, {duration: 2, y: 10});
+    gsap.to(camera.position, {duration: 2, z: 20});
 });
 
-const span_category_headphones_ELEMENT = document.querySelector('#span_category_headphones');
-
 const span_category_headphones = document.querySelector('#span_category_headphones');
-span_category_headphones.addEventListener('click', () => {
-    //setActiveItem();
-    television_GROUP.visible = false;
-    television_GROUP.activeItem = false;
-    phone_MESH.visible = false;
-    phone_MESH.activeItem = false;
-    camera_MESH.visible = false;
-    camera_MESH.activeItem = false;
-    headphone_MESH.visible = true;
-    headphone_MESH.activeItem = true;
 
+span_category_headphones.addEventListener('click', () => {
+
+    console.log("------------------------------------> television_GROUP.activeItem : " + television_GROUP.activeItem);
+    console.log("------------------------------------> phone_GROUP.activeItem : " + phone_GROUP.activeItem);
+    console.log("------------------------------------> camera_GROUP.activeItem : " + camera_GROUP.activeItem);
+    console.log("------------------------------------> headphone_GROUP.activeItem : " + headphone_GROUP.activeItem);
+
+    let PreviewItemDatas = setActiveItemFalse();
+
+    headphone_GROUP.visible = true;
+    headphone_GROUP.activeItem = true;
+
+    let positionNextItem = headphone_GROUP.positionItem;
+
+    let positionXNextItem = setPositionXNextItem(PreviewItemDatas, positionNextItem);
+
+    headphone_GROUP.position.x = positionXNextItem;
+
+    gsap.to(controls.target, {duration: 2, x: positionXNextItem});
+    gsap.to(cameraTarget_MESH.position, {duration: 2, x: positionXNextItem});
+    gsap.to(camera.position, {duration: 2, x: positionXNextItem});
+
+    gsap.to(camera.position, {duration: 2, y: 10});
+    gsap.to(camera.position, {duration: 2, z: 20});
 });
 
 // SET ACTIVE ITEM FALSE
 
 const setActiveItemFalse = function() {
+
+    let positionItem;
+    let positionX;
+
     if (television_GROUP.activeItem == true) {
+        positionItem = television_GROUP.positionItem;
+        positionX = television_GROUP.position.x;
         television_GROUP.activeItem = false;
         gsap.delayedCall(2, () => {
             television_GROUP.visible = false;
         });
     } else if (phone_GROUP.activeItem == true) {
+        positionItem = phone_GROUP.positionItem;
+        positionX = phone_GROUP.position.x;
         phone_GROUP.activeItem = false;
         gsap.delayedCall(2, () => {
             phone_GROUP.visible = false;
         });
     } else if (camera_GROUP.activeItem == true) {
+        positionItem = camera_GROUP.positionItem;
+        positionX = camera_GROUP.position.x;
         camera_GROUP.activeItem = false;
         gsap.delayedCall(2, () => {
             camera_GROUP.visible = false;
         });
     } else {
+        positionItem = headphone_GROUP.positionItem;
+        positionX = headphone_GROUP.position.x;
         headphone_GROUP.activeItem = false;
         gsap.delayedCall(2, () => {
             headphone_GROUP.visible = false;
         });
     }
+
+    const PreviewItemDatas = {
+        positionItem: positionItem,
+        positionX: positionX
+    };
+
+    return PreviewItemDatas;
 }
+
+// SET POSITION X NEXT ITEM
+
+const setPositionXNextItem = function(PreviewItemDatas, positionNextItem) {
+    console.log("------------------------------------> positionPreviewItem : " + PreviewItemDatas.positionItem);
+    console.log("------------------------------------> positionNextItem : " + positionNextItem);
+
+    let positionXNextItem;
+
+    if(PreviewItemDatas.positionItem < positionNextItem) {
+        positionXNextItem = PreviewItemDatas.positionX += 20;
+    } else {
+        positionXNextItem = PreviewItemDatas.positionX -= 20;
+    }
+
+    return positionXNextItem;
+};
 
 // ANIMATE
 
@@ -822,8 +884,6 @@ const animate = function () {
     requestAnimationFrame( animate );
 
     television_GROUP.rotation.y += televisionGroup_ROTATION_Y;
-
-    console.log(camera.rotation.y)
 
     camera.lookAt(cameraTarget_MESH.position.x, cameraTarget_MESH.position.y, cameraTarget_MESH.position.z);
 
