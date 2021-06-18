@@ -134,13 +134,13 @@ const loadingManager = new THREE.LoadingManager(
             loadingBarElement.style.transform = '';
 
             gsap.delayedCall(0.5, () => {
-                loadSecondMesh();
+                loadPhoneMesh();
 
                 gsap.delayedCall(0.5, () => {
-                    loadThirdMesh();
+                    loadCameraMesh();
 
                     gsap.delayedCall(0.5, () => {
-                        loadFourthMesh();
+                        loadHeadphoneMesh();
                     });
                 });
             });
@@ -213,27 +213,38 @@ const Metall_strip_ROUGHNESS_MAP = textureLoader.load('/img/textures/substance/S
 
 const ground_ALPHA_TEXTURE = textureLoader.load('/img/textures/Shadow_ALPHA_MAP.jpg');
 
-// LOADER
+// SETTINGS LOADERS
 
 const loader = new GLTFLoader();
 
 const television_GROUP = new THREE.Group();
 scene.add(television_GROUP);
-/* const phone_GROUP = new THREE.Group();
+const phone_GROUP = new THREE.Group();
+scene.add(phone_GROUP);
 const camera_GROUP = new THREE.Group();
-const headphone_GROUP = new THREE.Group(); */
+scene.add(camera_GROUP);
+const headphone_GROUP = new THREE.Group();
+scene.add(headphone_GROUP);
+
+const items_LIST = new Array(
+    television_GROUP,
+    phone_GROUP,
+    camera_GROUP,
+    headphone_GROUP
+);
 
 let television_MESH = new THREE.Object3D;
 let phone_MESH = new THREE.Object3D;
 let camera_MESH = new THREE.Object3D;
 let headphone_MESH = new THREE.Object3D;
 
+// TELEVISION LOADER
+
 loader.load(
 	'gltf/Samsung_SMART_TV.gltf',
 	function (gltf) {
 		scene.add(gltf.scene);
         television_MESH = gltf.scene;
-        //television_MESH.parent(television_GROUP);
 		gltf.asset;
         gltf.scene.traverse(function(child) {
             //console.log(child);
@@ -565,50 +576,20 @@ loader.load(
 	}
 );
 
-// GROUND
+// TELEVISION GROUND
 
-const ground_GEOMETRY = new THREE.PlaneGeometry(20, 20);
-const ground_MATERIAL = new THREE.MeshBasicMaterial( {color: 0x000000, transparent: false, alphaMap: ground_ALPHA_TEXTURE} );
-const television_GROUND = new THREE.Mesh(ground_GEOMETRY, ground_MATERIAL);
+const television_ground_GEOMETRY = new THREE.PlaneGeometry(20, 20);
+const television_ground_MATERIAL = new THREE.MeshBasicMaterial( {color: 0x000000, transparent: false, alphaMap: ground_ALPHA_TEXTURE} );
+const television_GROUND = new THREE.Mesh(television_ground_GEOMETRY, television_ground_MATERIAL);
 television_GROUND.rotation.x = - Math.PI / 2;
 
 television_GROUP.add(television_GROUND);
 television_GROUP.activeItem = true;
 
-// ANIMATE
+// PHONE LOADER
 
-const animate = function () {
-    requestAnimationFrame( animate );
-
-    television_GROUP.rotation.y += televisionGroup_ROTATION_Y;
-
-    console.log(camera.rotation.y)
-
-    camera.lookAt(cameraTarget_MESH.position.x, cameraTarget_MESH.position.y, cameraTarget_MESH.position.z);
-
-    renderer.render(scene, camera);
-    renderer.setClearColor(0xD2D2D2, 1);
-};
-
-// RESIZE
-
-window.addEventListener('resize', () => {
-    windowSizes.width = window.innerWidth;
-    windowSizes.height = window.innerHeight;
-    
-    camera.aspect = windowSizes.width / windowSizes.height;
-    camera.updateProjectionMatrix();
-    
-    renderer.setSize(windowSizes.width, windowSizes.height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-});
-
-animate();
-
-// LOADER SECOND MESH
-
-const loadSecondMesh = function () {
-    console.log("Start load 2");
+const loadPhoneMesh = function () {
+    console.log("------------------------------------> START phone loader");
 
     loader.load(
         'gltf/iPhone_12_pro_obj.gltf',
@@ -634,10 +615,10 @@ const loadSecondMesh = function () {
     );
 }
 
-// LOADER THIRD MESH
+// CAMERA LOADER
 
-const loadThirdMesh = function () {
-    console.log("Start load 3");
+const loadCameraMesh = function () {
+    console.log("------------------------------------> START camera loader");
 
     loader.load(
         'gltf/Canon_G9_II_Black.gltf',
@@ -663,10 +644,10 @@ const loadThirdMesh = function () {
     );
 }
 
-// LOADER THIRD MESH
+// HEADPHONE LOADER
 
-const loadFourthMesh = function () {
-    console.log("Start load 4");
+const loadHeadphoneMesh = function () {
+    console.log("------------------------------------> START headphone loader");
 
     loader.load(
         'gltf/Beats_Studio_3.gltf',
@@ -723,7 +704,7 @@ span_category_phones.addEventListener('click', () => {
 
     phone_MESH.visible = true;
     phone_MESH.activeItem = true;
-    
+
     gsap.to(controls.target, {duration: 2, x: 20});
     gsap.to(cameraTarget_MESH.position, {duration: 2, x: 20});
     gsap.to(camera.position, {duration: 2, x: 20});
@@ -787,5 +768,35 @@ const setActiveItemFalse = function() {
         headphone_MESH.visible  = false;
     }
 }
+
+// ANIMATE
+
+const animate = function () {
+    requestAnimationFrame( animate );
+
+    television_GROUP.rotation.y += televisionGroup_ROTATION_Y;
+
+    console.log(camera.rotation.y)
+
+    camera.lookAt(cameraTarget_MESH.position.x, cameraTarget_MESH.position.y, cameraTarget_MESH.position.z);
+
+    renderer.render(scene, camera);
+    renderer.setClearColor(0xD2D2D2, 1);
+};
+
+// RESIZE
+
+window.addEventListener('resize', () => {
+    windowSizes.width = window.innerWidth;
+    windowSizes.height = window.innerHeight;
+    
+    camera.aspect = windowSizes.width / windowSizes.height;
+    camera.updateProjectionMatrix();
+    
+    renderer.setSize(windowSizes.width, windowSizes.height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});
+
+animate();
 
   
