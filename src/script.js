@@ -701,7 +701,6 @@ const loadFourthMesh = function () {
 
 const span_category_televisions_ELEMENT = document.querySelector('#span_category_televisions');
 
-const span_category_televisions = document.querySelector('#span_category_televisions');
 span_category_televisions.addEventListener('click', () => {
     //setActiveItem();
     television_GROUP.visible = true;
@@ -717,11 +716,10 @@ span_category_televisions.addEventListener('click', () => {
 
 const span_category_phones_ELEMENT = document.querySelector('#span_category_phones');
 
-const span_category_phones = document.querySelector('#span_category_phones');
 span_category_phones.addEventListener('click', () => {
     //setActiveItem();
-    //television_GROUP.visible = false;
-    //television_GROUP.activeItem = false;
+    television_GROUP.visible = false;
+    television_GROUP.activeItem = false;
     phone_MESH.visible = true;
     phone_MESH.activeItem = true;
     camera_MESH.visible = false;
