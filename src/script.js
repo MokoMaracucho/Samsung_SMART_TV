@@ -209,9 +209,12 @@ const Metall_strip_METALNESS_MAP = textureLoader.load('/img/textures/substance/S
 const Metall_strip_NORMAL_MAP = textureLoader.load('/img/textures/substance/Samsung_SMART_TV_Metall_strip_Normal.png');
 const Metall_strip_ROUGHNESS_MAP = textureLoader.load('/img/textures/substance/Samsung_SMART_TV_Metall_strip_Roughness.png');
 
-//  GROUND
+//  GROUNDS ALPHA MAPS
 
-const ground_ALPHA_TEXTURE = textureLoader.load('/img/textures/Shadow_ALPHA_MAP.jpg');
+const television_ground_ALPHA_MAP = textureLoader.load('/img/textures/television_ground_ALPHA_MAP.jpg');
+const phone_ground_ALPHA_MAP = textureLoader.load('/img/textures/television_ground_ALPHA_MAP.jpg');
+const camera_ground_ALPHA_MAP = textureLoader.load('/img/textures/television_ground_ALPHA_MAP.jpg');
+const headphone_ground_ALPHA_MAP = textureLoader.load('/img/textures/television_ground_ALPHA_MAP.jpg');
 
 // SETTINGS LOADERS
 
@@ -226,12 +229,12 @@ scene.add(camera_GROUP);
 const headphone_GROUP = new THREE.Group();
 scene.add(headphone_GROUP);
 
-const items_LIST = new Array(
+/* const items_LIST = new Array(
     television_GROUP,
     phone_GROUP,
     camera_GROUP,
     headphone_GROUP
-);
+); */
 
 let television_MESH = new THREE.Object3D;
 let phone_MESH = new THREE.Object3D;
@@ -579,12 +582,13 @@ loader.load(
 // TELEVISION GROUND
 
 const television_ground_GEOMETRY = new THREE.PlaneGeometry(20, 20);
-const television_ground_MATERIAL = new THREE.MeshBasicMaterial( {color: 0x000000, transparent: false, alphaMap: ground_ALPHA_TEXTURE} );
+const television_ground_MATERIAL = new THREE.MeshBasicMaterial( {color: 0x000000, transparent: false, alphaMap: television_ground_ALPHA_MAP} );
 const television_GROUND = new THREE.Mesh(television_ground_GEOMETRY, television_ground_MATERIAL);
 television_GROUND.rotation.x = - Math.PI / 2;
 
 television_GROUP.add(television_GROUND);
 television_GROUP.activeItem = true;
+television_GROUP.positionItem = 1;
 
 // PHONE LOADER
 
@@ -599,6 +603,7 @@ const loadPhoneMesh = function () {
             phone_MESH.position.x = 20;
             phone_MESH.visible = false;
             phone_MESH.activeItem = false;
+            television_GROUP.positionItem = 2;
             gltf.asset;
             gltf.scene.traverse(function(child) {
                 console.log(child);
@@ -614,6 +619,18 @@ const loadPhoneMesh = function () {
         }
     );
 }
+
+// PHONE GROUND
+
+const phone_ground_GEOMETRY = new THREE.PlaneGeometry(20, 20);
+const phone_ground_MATERIAL = new THREE.MeshBasicMaterial( {color: 0x000000, transparent: false, alphaMap: phone_ground_ALPHA_MAP} );
+const phone_GROUND = new THREE.Mesh(phone_ground_GEOMETRY, phone_ground_MATERIAL);
+phone_GROUND.rotation.x = - Math.PI / 2;
+
+phone_GROUP.add(phone_GROUND);
+phone_GROUP.activeItem = false;
+phone_GROUP.visible = false;
+phone_GROUP.positionItem = 2;
 
 // CAMERA LOADER
 
@@ -644,6 +661,18 @@ const loadCameraMesh = function () {
     );
 }
 
+// CAMERA GROUND
+
+const camera_ground_GEOMETRY = new THREE.PlaneGeometry(20, 20);
+const camera_ground_MATERIAL = new THREE.MeshBasicMaterial( {color: 0x000000, transparent: false, alphaMap: camera_ground_ALPHA_MAP} );
+const camera_GROUND = new THREE.Mesh(camera_ground_GEOMETRY, camera_ground_MATERIAL);
+camera_GROUND.rotation.x = - Math.PI / 2;
+
+camera_GROUP.add(camera_GROUND);
+camera_GROUP.activeItem = false;
+camera_GROUP.visible = false;
+camera_GROUP.positionItem = 3;
+
 // HEADPHONE LOADER
 
 const loadHeadphoneMesh = function () {
@@ -672,6 +701,18 @@ const loadHeadphoneMesh = function () {
         }
     );
 }
+
+// HEADPHONE GROUND
+
+const headphone_ground_GEOMETRY = new THREE.PlaneGeometry(20, 20);
+const headphone_ground_MATERIAL = new THREE.MeshBasicMaterial( {color: 0x000000, transparent: false, alphaMap: headphone_ground_ALPHA_MAP} );
+const headphone_GROUND = new THREE.Mesh(headphone_ground_GEOMETRY, headphone_ground_MATERIAL);
+headphone_GROUND.rotation.x = - Math.PI / 2;
+
+headphone_GROUP.add(headphone_GROUND);
+headphone_GROUP.activeItem = false;
+headphone_GROUP.visible = false;
+headphone_GROUP.positionItem = 3;
 
 // EVENTS II
 
@@ -757,15 +798,21 @@ const setActiveItemFalse = function() {
         gsap.delayedCall(2, () => {
             television_GROUP.visible = false;
         });
-    } else if (phone_MESH.activeItem == true) {
-        phone_MESH.activeItem = false;
-        phone_MESH.visible  = false;
-    } else if (camera_MESH.activeItem == true) {
-        camera_MESH.activeItem = false;
-        camera_MESH.visible  = false;
+    } else if (phone_GROUP.activeItem == true) {
+        phone_GROUP.activeItem = false;
+        gsap.delayedCall(2, () => {
+            phone_GROUP.visible = false;
+        });
+    } else if (camera_GROUP.activeItem == true) {
+        camera_GROUP.activeItem = false;
+        gsap.delayedCall(2, () => {
+            camera_GROUP.visible = false;
+        });
     } else {
-        headphone_MESH.activeItem == false;
-        headphone_MESH.visible  = false;
+        headphone_GROUP.activeItem = false;
+        gsap.delayedCall(2, () => {
+            headphone_GROUP.visible = false;
+        });
     }
 }
 
