@@ -65,14 +65,14 @@ const mousePosition_SCREEN = new THREE.Vector2();
 const mousePosition_THREE = new THREE.Vector2();
 
 canvas.addEventListener('mousemove', (event) => {
-    mousePosition_SCREEN.x = event.clientX - Math.ceil(window.innerWidth * 0.12);
+    mousePosition_SCREEN.x = event.clientX - Math.floor(window.innerWidth * 0.12);
     mousePosition_SCREEN.y = event.clientY;
     
-    let canvasWidth = window.innerWidth - Math.ceil(window.innerWidth * 0.12);
+    let canvasWidth = window.innerWidth;
     let canvasHeight = window.innerHeight;
 
     mousePosition_THREE.x = ((2 / canvasWidth) * mousePosition_SCREEN.x) - 1;
-    mousePosition_THREE.y = ((2 / canvasHeight) * mousePosition_SCREEN.y) - 1;
+    mousePosition_THREE.y = - ((2 / canvasHeight) * mousePosition_SCREEN.y) - 1;
 
     console.log("------------------------------------> (X: " +  mousePosition_THREE.x + ", Y: " +  mousePosition_THREE.y);
 });
@@ -907,7 +907,7 @@ const animate = function () {
     camera.lookAt(cameraTarget_MESH.position.x, cameraTarget_MESH.position.y, cameraTarget_MESH.position.z);
 
     renderer.render(scene, camera);
-    renderer.setClearColor(0xFF0000, 1);
+    renderer.setClearColor(0xD2D2D2, 1);
 };
 
 // RESIZE
