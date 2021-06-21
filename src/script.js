@@ -1059,8 +1059,29 @@ const animate = function () {
 
 // CHANGE COLOR
 
+let phone_COLOR = 'white';
+
 canvas.addEventListener('click', () => {
     if(isIntersecting == true) {
+        switch(phone_COLOR) {
+            case 'white':
+                Body_black.material.color.set('#585753');
+                phone_COLOR = 'black';
+                break;
+            case 'black':
+                Body_black.material.color.set('#efe0cb');
+                phone_COLOR = 'beige';
+                break;
+            case 'beige':
+                Body_black.material.color.set('#384f5d');
+                phone_COLOR = 'green';
+                break;
+            case 'green':
+                Body_black.material.color.set('#e1e2dc');
+                phone_COLOR = 'white';
+                break;
+        } 
+
         console.log("------------------------------------> isIntersecting : " + isIntersecting);
     }
 });
