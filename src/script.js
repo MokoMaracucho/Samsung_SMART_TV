@@ -9,6 +9,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { gsap } from 'gsap';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { Raycaster } from 'three';
 
 // GUI
 
@@ -60,6 +61,8 @@ controls.target.y = hauteurTargetCamera;
 controls.update();
 
 // RAYCASTER
+
+const raycaster = new THREE.Raycaster();
 
 const mousePosition_SCREEN = new THREE.Vector2();
 const mousePosition_THREE = new THREE.Vector2();
@@ -618,6 +621,11 @@ const loadPhoneMesh = function () {
             gltf.scene.traverse(function(child) {
                 console.log(child);
             });
+
+            const Body_black = gltf.scene.getObjectByName("iPhone_12_Pro_1", true);
+            const Body_black_MATERIAL = new THREE.MeshBasicMaterial( {color: 0x00FF00} );
+            Body_black.material = Body_black_MATERIAL;
+
             phone_GROUP.add(phone_MESH);
         },
         
@@ -655,7 +663,7 @@ const loadCameraMesh = function () {
             camera_MESH = gltf.scene;
             gltf.asset;
             gltf.scene.traverse(function(child) {
-                console.log(child);
+                //console.log(child);
             });
             camera_GROUP.add(camera_MESH);
         },
@@ -694,7 +702,7 @@ const loadHeadphoneMesh = function () {
             headphone_MESH = gltf.scene;
             gltf.asset;
             gltf.scene.traverse(function(child) {
-                console.log(child);
+                //console.log(child);
             });
             headphone_GROUP.add(headphone_MESH);
         },
@@ -905,6 +913,19 @@ const animate = function () {
     television_GROUP.rotation.y += televisionGroup_ROTATION_Y;
 
     camera.lookAt(cameraTarget_MESH.position.x, cameraTarget_MESH.position.y, cameraTarget_MESH.position.z);
+
+    raycaster.setFromCamera(mousePosition_THREE, camera);
+
+    const objectsToTest = [];
+    const intersects = raycaster.intersectObjects(objectsToTest);
+
+    for(const object of objectsToTest) {
+        //object.material.color.set('#ff0000');
+    }
+
+    for(const object of intersects) {
+        //intersect.object.material.color.set('#0000ff');
+    }
 
     renderer.render(scene, camera);
     renderer.setClearColor(0xFF0000, 1);
