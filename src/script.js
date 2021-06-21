@@ -1062,23 +1062,37 @@ const animate = function () {
 let phone_COLOR = 'white';
 
 canvas.addEventListener('click', () => {
+    let animation = gsap.timeline();
+
     if(isIntersecting == true) {
         switch(phone_COLOR) {
             case 'white':
                 Body_black.material.color.set('#585753');
                 phone_COLOR = 'black';
+
+                animation.to(phone_MESH.position, {duration: 0.3, z: 0.5, ease: "power1"})
+                    .to(phone_MESH.position, {duration: 2, z: 0, ease: "elastic"});
                 break;
             case 'black':
                 Body_black.material.color.set('#efe0cb');
                 phone_COLOR = 'beige';
+                
+                animation.to(phone_MESH.position, {duration: 0.3, z: 0.5, ease: "power1"})
+                    .to(phone_MESH.position, {duration: 2, z: 0, ease: "elastic"});
                 break;
             case 'beige':
                 Body_black.material.color.set('#384f5d');
                 phone_COLOR = 'green';
+                
+                animation.to(phone_MESH.position, {duration: 0.3, z: 0.5, ease: "power1"})
+                    .to(phone_MESH.position, {duration: 2, z: 0, ease: "elastic"});
                 break;
             case 'green':
                 Body_black.material.color.set('#e1e2dc');
                 phone_COLOR = 'white';
+                
+                animation.to(phone_MESH.position, {duration: 0.3, z: 0.5, ease: "power1"})
+                    .to(phone_MESH.position, {duration: 2, z: 0, ease: "elastic"});
                 break;
         } 
 
