@@ -77,8 +77,11 @@ canvas.addEventListener('mousemove', (event) => {
     mousePosition_THREE.x = ((2 / canvasWidth) * mousePosition_SCREEN.x) - 1;
     mousePosition_THREE.y = - ((2 / canvasHeight) * mousePosition_SCREEN.y) + 1;
 
-    console.log("------------------------------------> (X: " +  mousePosition_THREE.x + ", Y: " +  mousePosition_THREE.y);
+    //console.log("------------------------------------> (X: " +  mousePosition_THREE.x + ", Y: " +  mousePosition_THREE.y);
 });
+
+const objectsToTest = [];
+let isIntersecting = false;
 
 // RENDERER
 
@@ -710,6 +713,26 @@ const loadPhoneMesh = function () {
             // 17 = Gold
 
             Gold = gltf.scene.getObjectByName("iPhone_12_Pro_17", true);
+
+            objectsToTest = [
+                Body_black,
+                Antenna_black,
+                Black,
+                Glass_matte,
+                Glass,
+                Front,
+                Black_back,
+                Steel_black,
+                Screen12Pro_black,
+                Plastik_black,
+                Plastik_cam,
+                Glass_cam,
+                Light_yellow,
+                Light_orange,
+                Rubber_black,
+                Glass_flash,
+                Gold
+            ];
         },
         
         function (xhr) {
@@ -816,7 +839,7 @@ headphone_GROUP.positionItem = 4;
 
 const span_category_televisions_ELEMENT = document.querySelector('#span_category_televisions');
 
-span_category_televisions.addEventListener('click', () => {
+span_category_televisions_ELEMENT.addEventListener('click', () => {
 
     console.log("------------------------------------> television_GROUP.activeItem : " + television_GROUP.activeItem);
     console.log("------------------------------------> phone_GROUP.activeItem : " + phone_GROUP.activeItem);
@@ -844,7 +867,7 @@ span_category_televisions.addEventListener('click', () => {
 
 const span_category_phones_ELEMENT = document.querySelector('#span_category_phones');
 
-span_category_phones.addEventListener('click', () => {
+span_category_phones_ELEMENT.addEventListener('click', () => {
 
     console.log("------------------------------------> television_GROUP.activeItem : " + television_GROUP.activeItem);
     console.log("------------------------------------> phone_GROUP.activeItem : " + phone_GROUP.activeItem);
@@ -870,9 +893,9 @@ span_category_phones.addEventListener('click', () => {
     gsap.to(camera.position, {duration: 2, z: 20});
 });
 
-const span_category_cameras = document.querySelector('#span_category_cameras');
+const span_category_cameras_ELEMENT = document.querySelector('#span_category_cameras');
 
-span_category_cameras.addEventListener('click', () => {
+span_category_cameras_ELEMENT.addEventListener('click', () => {
 
     console.log("------------------------------------> television_GROUP.activeItem : " + television_GROUP.activeItem);
     console.log("------------------------------------> phone_GROUP.activeItem : " + phone_GROUP.activeItem);
@@ -898,9 +921,9 @@ span_category_cameras.addEventListener('click', () => {
     gsap.to(camera.position, {duration: 2, z: 20});
 });
 
-const span_category_headphones = document.querySelector('#span_category_headphones');
+const span_category_headphones_ELEMENT = document.querySelector('#span_category_headphones');
 
-span_category_headphones.addEventListener('click', () => {
+span_category_headphones_ELEMENT.addEventListener('click', () => {
 
     console.log("------------------------------------> television_GROUP.activeItem : " + television_GROUP.activeItem);
     console.log("------------------------------------> phone_GROUP.activeItem : " + phone_GROUP.activeItem);
@@ -1021,18 +1044,26 @@ const animate = function () {
         ];
         const intersects = raycaster.intersectObjects(objectsToTest);
 
-        for(const object of objectsToTest) {
-            Body_black.material.color.set('#ff0000');
-        }
-
-        for(const object of intersects) {
-            Body_black.material.color.set('#0000ff');
+        if(intersects.length > 0) {
+            isIntersecting = true;
+            console.log(isIntersecting);
+        } else {
+            isIntersecting = false;
+            console.log(isIntersecting);
         }
     }
 
     renderer.render(scene, camera);
     renderer.setClearColor(0xFF0000, 1);
 };
+
+// CHANGE COLOR
+
+canvas.addEventListener('click', () => {
+    if(isIntersecting == true) {
+        console.log("------------------------------------> isIntersecting : " + isIntersecting);
+    }
+});
 
 // RESIZE
 
