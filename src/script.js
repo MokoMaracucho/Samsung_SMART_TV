@@ -72,7 +72,7 @@ canvas.addEventListener('mousemove', (event) => {
     let canvasHeight = window.innerHeight;
 
     mousePosition_THREE.x = ((2 / canvasWidth) * mousePosition_SCREEN.x) - 1;
-    mousePosition_THREE.y = - ((2 / canvasHeight) * mousePosition_SCREEN.y) - 1;
+    mousePosition_THREE.y = - ((2 / canvasHeight) * mousePosition_SCREEN.y) + 1;
 
     console.log("------------------------------------> (X: " +  mousePosition_THREE.x + ", Y: " +  mousePosition_THREE.y);
 });
@@ -907,7 +907,7 @@ const animate = function () {
     camera.lookAt(cameraTarget_MESH.position.x, cameraTarget_MESH.position.y, cameraTarget_MESH.position.z);
 
     renderer.render(scene, camera);
-    renderer.setClearColor(0xD2D2D2, 1);
+    renderer.setClearColor(0xFF0000, 1);
 };
 
 // RESIZE
