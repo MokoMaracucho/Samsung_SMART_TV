@@ -609,6 +609,24 @@ television_GROUP.positionItem = 1;
 
 // PHONE LOADER
 
+let Body_black = new THREE.Object3D;
+let Antenna_black = new THREE.Object3D;
+let Black = new THREE.Object3D;
+let Glass_matte = new THREE.Object3D;
+let Glass = new THREE.Object3D;
+let Front = new THREE.Object3D;
+let Black_back = new THREE.Object3D;
+let Steel_black = new THREE.Object3D;
+let Screen12Pro_black = new THREE.Object3D;
+let Plastik_black = new THREE.Object3D;
+let Plastik_cam = new THREE.Object3D;
+let Glass_cam = new THREE.Object3D;
+let Light_yellow = new THREE.Object3D;
+let Light_orange = new THREE.Object3D;
+let Rubber_black = new THREE.Object3D;
+let Glass_flash = new THREE.Object3D;
+let Gold = new THREE.Object3D;
+
 const loadPhoneMesh = function () {
     console.log("------------------------------------> START phone loader");
 
@@ -621,12 +639,77 @@ const loadPhoneMesh = function () {
             gltf.scene.traverse(function(child) {
                 console.log(child);
             });
+            phone_GROUP.add(phone_MESH);
 
-            const Body_black = gltf.scene.getObjectByName("iPhone_12_Pro_1", true);
-            const Body_black_MATERIAL = new THREE.MeshBasicMaterial( {color: 0x00FF00} );
+            // 1 = Body_black
+
+            Body_black = gltf.scene.getObjectByName("iPhone_12_Pro_1", true);
+            let Body_black_MATERIAL = new THREE.MeshBasicMaterial( {color: 0x00FF00} );
             Body_black.material = Body_black_MATERIAL;
 
-            phone_GROUP.add(phone_MESH);
+            // 2 = Antenna_black
+
+            Antenna_black = gltf.scene.getObjectByName("iPhone_12_Pro_2", true);
+
+            // 3 = Black
+
+            Black = gltf.scene.getObjectByName("iPhone_12_Pro_3", true);
+
+            // 4 = Glass_matte
+
+            Glass_matte = gltf.scene.getObjectByName("iPhone_12_Pro_4", true);
+
+            // 5 = Glass
+
+            Glass = gltf.scene.getObjectByName("iPhone_12_Pro_5", true);
+
+            // 6 = Front
+
+            Front = gltf.scene.getObjectByName("iPhone_12_Pro_6", true);
+
+            // 7 = Black_back
+
+            Black_back = gltf.scene.getObjectByName("iPhone_12_Pro_7", true);
+
+            // 8 = Steel_black
+
+            Steel_black = gltf.scene.getObjectByName("iPhone_12_Pro_8", true);
+
+            // 9 = Screen12Pro_black
+
+            Screen12Pro_black = gltf.scene.getObjectByName("iPhone_12_Pro_9", true);
+
+            // 10 = Plastik_black
+
+            Plastik_black = gltf.scene.getObjectByName("iPhone_12_Pro_10", true);
+
+            // 11 = Plastik_cam
+
+            Plastik_cam = gltf.scene.getObjectByName("iPhone_12_Pro_11", true);
+
+            // 12 = Glass_cam
+
+            Glass_cam = gltf.scene.getObjectByName("iPhone_12_Pro_12", true);
+
+            // 13 = Light_yellow
+
+            Light_yellow = gltf.scene.getObjectByName("iPhone_12_Pro_13", true);
+
+            // 14 = Light_orange
+
+            Light_orange = gltf.scene.getObjectByName("iPhone_12_Pro_14", true);
+
+            // 15 = Rubber_black
+
+            Rubber_black = gltf.scene.getObjectByName("iPhone_12_Pro_15", true);
+
+            // 16 = Glass_flash
+
+            Glass_flash = gltf.scene.getObjectByName("iPhone_12_Pro_16", true);
+
+            // 17 = Gold
+
+            Gold = gltf.scene.getObjectByName("iPhone_12_Pro_17", true);
         },
         
         function (xhr) {
@@ -916,15 +999,35 @@ const animate = function () {
 
     raycaster.setFromCamera(mousePosition_THREE, camera);
 
-    const objectsToTest = [];
-    const intersects = raycaster.intersectObjects(objectsToTest);
+    if (phone_GROUP.activeItem == true) {
+        const objectsToTest = [
+            Body_black,
+            Antenna_black,
+            Black,
+            Glass_matte,
+            Glass,
+            Front,
+            Black_back,
+            Steel_black,
+            Screen12Pro_black,
+            Plastik_black,
+            Plastik_cam,
+            Glass_cam,
+            Light_yellow,
+            Light_orange,
+            Rubber_black,
+            Glass_flash,
+            Gold
+        ];
+        const intersects = raycaster.intersectObjects(objectsToTest);
 
-    for(const object of objectsToTest) {
-        //object.material.color.set('#ff0000');
-    }
+        for(const object of objectsToTest) {
+            Body_black.material.color.set('#ff0000');
+        }
 
-    for(const object of intersects) {
-        //intersect.object.material.color.set('#0000ff');
+        for(const object of intersects) {
+            Body_black.material.color.set('#0000ff');
+        }
     }
 
     renderer.render(scene, camera);
